@@ -1,0 +1,32 @@
+#include <iostream>
+#include <chrono>
+using namespace std;
+using namespace chrono;
+
+int fibonacci_dp(int n) {
+    int fib[n+1];
+    fib[0] = 0;
+    fib[1] = 1;
+    for (int i = 2; i <= n; i++) {
+        fib[i] = fib[i-1] + fib[i-2];
+    }
+    return fib[n];
+}
+
+void measure_execution_time(int (*func)(int), int n, const string& method) {
+    auto start_time = high_resolution_clock::now();
+    int result = func(n);
+    auto end_time = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end_time - start_time);
+    cout << "Nilai Fibonacci dengan " << method << " untuk n=" << n << ": " << result << ", Waktu eksekusi: " << duration.count() << " mikrodetik" << endl;
+}
+
+int main() {
+    int ns[] = {10, 25, 30, 40, 50};
+    for (int n : ns) {
+        measure_execution_time(fibonacci_dp, n, "DP");
+        cout << endl;
+    }
+
+    return 0;
+}
