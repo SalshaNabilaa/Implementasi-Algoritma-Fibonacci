@@ -1,0 +1,33 @@
+#include <iostream>
+#include <chrono>
+using namespace std;
+using namespace chrono;
+
+int fibonacci_recursive(int n) {
+    if (n <= 0) {
+        return -1;
+    } else if (n == 0 || n == 1) {
+        return n;
+    } else {
+        return fibonacci_recursive(n-1) + fibonacci_recursive(n-2);
+    }
+}
+
+void measure_execution_time(int (*func)(int), int n, const string& method) {
+    auto start_time = high_resolution_clock::now();
+    int result = func(n);
+    auto end_time = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end_time - start_time);
+    cout << "Nilai Fibonacci dengan " << method << " untuk n=" << n << ": " << result << ", Waktu eksekusi: " << duration.count() << " mikrodetik" << endl;
+}
+
+int main() {
+    int ns[] = {10, 25, 30, 40, 50};
+
+    for (int n : ns) {
+        measure_execution_time(fibonacci_recursive, n, "rekursif");
+        cout << endl;
+    }
+
+    return 0;
+}
